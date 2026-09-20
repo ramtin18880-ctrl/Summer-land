@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summer Land</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --blue:#1295e8;
+  --deep:#075b9b;
+  --white:rgba(255,255,255,.88);
+  --glass:rgba(255,255,255,.58);
+  --text:#123047;
+  --shadow:0 18px 50px rgba(20,92,135,.18);
+}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Tahoma,Arial,sans-serif;
+  color:var(--text);
+  background:#9ee8ff;
+  overflow-x:hidden;
+}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+a{text-decoration:none;color:inherit}
+
+.beach{
+  position:fixed;inset:0;z-index:-5;overflow:hidden;
+  background:
+    linear-gradient(180deg,#62d9ff 0%,#b8f2ff 49%,#62d4e9 50%,#2bb9d1 68%,#f8d58c 69%,#f6c979 100%);
+}
+.beach:before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 18% 22%,rgba(255,255,255,.72) 0 2px,transparent 3px),
+    radial-gradient(circle at 74% 16%,rgba(255,255,255,.5) 0 2px,transparent 3px),
+    radial-gradient(circle at 46% 32%,rgba(255,255,255,.5) 0 2px,transparent 3px);
+  background-size:170px 130px,220px 160px,260px 190px;
+  animation:floatDots 10s linear infinite;
+}
+.beach:after{
+  content:"";position:absolute;left:-10%;right:-10%;top:49%;
+  height:22%;
+  background:
+    radial-gradient(ellipse at 20% 10%,rgba(255,255,255,.75) 0 7%,transparent 8%),
+    radial-gradient(ellipse at 55% 25%,rgba(255,255,255,.55) 0 8%,transparent 9%),
+    radial-gradient(ellipse at 85% 8%,rgba(255,255,255,.65) 0 7%,transparent 8%);
+  filter:blur(1px);
+  animation:waves 5s ease-in-out infinite alternate;
+}
+@keyframes waves{from{transform:translateX(-2%)}to{transform:translateX(2%)}}
+@keyframes floatDots{50%{transform:translateY(10px)}}
+
+.sun{
+  width:125px;height:125px;border-radius:50%;
+  position:absolute;top:48px;left:50%;transform:translateX(-50%);
+  display:grid;place-items:center;
+  font-size:74px;
+  filter:drop-shadow(0 0 22px rgba(255,203,47,.7));
+  animation:sunFloat 4s ease-in-out infinite;
+}
+.sun:before{
+  content:"";position:absolute;inset:-22px;border-radius:50%;
+  border:2px solid rgba(255,213,70,.28);
+  box-shadow:0 0 35px rgba(255,207,57,.35);
+  animation:sunHalo 3.5s ease-in-out infinite;
+}
+@keyframes sunFloat{50%{transform:translate(-50%,7px)}}
+@keyframes sunHalo{50%{transform:scale(1.08);opacity:.65}}
+
+.wrapper{width:min(1120px,92%);margin:auto}
+header{
+  position:sticky;top:12px;z-index:20;
+  width:min(1120px,92%);margin:12px auto 0;
+  padding:10px 14px;
+  background:rgba(255,255,255,.7);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.65);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.logo{font-size:21px;font-weight:900;color:#0876bb}
+nav{display:flex;gap:8px}
+nav a,.header-btn{
+  padding:9px 13px;border-radius:12px;
+  background:rgba(255,255,255,.6);
+  color:#184c69;font-weight:700;font-size:13px;
+  transition:.2s;
+}
+nav a:hover,.header-btn:hover{background:#fff;transform:translateY(-2px)}
+.actions{display:flex;gap:7px;align-items:center}
+.register{background:#0d91df;color:white}
+.cart-btn{position:relative;background:#fff}
+.badge{
+  position:absolute;top:-6px;right:-6px;
+  min-width:19px;height:19px;padding:0 5px;
+  display:grid;place-items:center;border-radius:20px;
+  background:#ff7b39;color:#fff;font-size:11px;font-weight:bold;
+}
+
+.hero{min-height:610px;padding:175px 0 80px;text-align:center}
+.hero h1{font-size:clamp(45px,8vw,88px);margin:0 0 12px;color:#083d61;text-shadow:0 5px 20px rgba(255,255,255,.65)}
+.hero p{font-size:17px;color:#205b76;margin:0 auto 25px}
+.primary{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:12px 22px;border-radius:14px;
+  background:#087fc8;color:#fff;font-weight:800;
+  box-shadow:0 10px 25px rgba(8,127,200,.24);
+  transition:.2s;
+}
+.primary:hover{transform:translateY(-2px)}
+
+.section{
+  padding:60px 0;
+}
+.section-title{text-align:center;margin-bottom:28px}
+.section-title h2{font-size:31px;margin:0 0 8px;color:#083d61}
+.section-title p{margin:0;color:#38677d}
+
+.shop-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+}
+.rank-card{
+  background:var(--white);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.8);
+  border-radius:22px;padding:22px 17px;
+  text-align:center;box-shadow:var(--shadow);
+  transition:.25s;
+}
+.rank-card:hover{transform:translateY(-7px)}
+.rank-icon{font-size:40px;margin-bottom:10px}
+.rank-card h3{margin:5px 0;font-size:21px;color:#084e79}
+.price{font-size:20px;font-weight:900;color:#0b8bca;margin:11px 0 17px}
+.buy{
+  width:100%;padding:10px;border-radius:12px;
+  background:#0b8bca;color:white;font-weight:800;
+  transition:.2s;
+}
+.buy:hover{background:#076ea1}
+
+.about-box{
+  max-width:850px;margin:auto;padding:30px;
+  background:var(--white);backdrop-filter:blur(12px);
+  border-radius:25px;box-shadow:var(--shadow);
+  text-align:center;line-height:2.1;font-size:17px;
+}
+
+.modes{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:20px;
+}
+.mode{
+  min-height:235px;padding:30px;
+  background:var(--white);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.8);
+  border-radius:26px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+}
+.mode-icon{font-size:55px}
+.mode h3{font-size:29px;margin:12px 0 5px;color:#084e79}
+.mode p{margin:0;color:#4b7182;font-weight:700}
+
+.register-modal,.cart-modal,.pay-modal{
+  position:fixed;inset:0;z-index:50;
+  display:none;align-items:center;justify-content:center;
+  padding:18px;background:rgba(4,42,65,.38);
+  backdrop-filter:blur(7px);
+}
+.modal{
+  width:min(500px,100%);max-height:90vh;overflow:auto;
+  background:#fff;border-radius:25px;padding:25px;
+  box-shadow:0 25px 80px rgba(0,0,0,.25);
+}
+.modal h2{margin:0 0 18px;color:#084e79}
+.close{
+  float:left;width:35px;height:35px;border-radius:50%;
+  background:#edf6fa;color:#28627b;font-size:20px;
+}
+.field{margin-bottom:13px}
+.field label{display:block;margin-bottom:6px;font-size:13px;font-weight:bold;color:#315c70}
+.field input{
+  width:100%;padding:12px;border:1px solid #cfe2ea;
+  border-radius:12px;outline:none;
+}
+.field input:focus{border-color:#0b8bca}
+.error{color:#d94848;font-size:13px;margin:8px 0;display:none}
+.success{color:#18864b;font-size:13px;margin:8px 0;display:none}
+
+.cart-empty{text-align:center;color:#607c89;padding:25px 0}
+.cart-item{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 0;border-bottom:1px solid #e7eef1;
+}
+.cart-info strong{display:block;color:#155574}
+.cart-info small{color:#67808c}
+.qty{display:flex;align-items:center;gap:7px}
+.qty button{
+  width:28px;height:28px;border-radius:8px;background:#eaf5fa;color:#126b93;
+}
+.remove{background:#fff0ec!important;color:#d95d3d!important}
+.total{
+  display:flex;justify-content:space-between;
+  margin:20px 0;font-size:19px;font-weight:900;color:#084e79;
+}
+.pay-box{
+  background:#eefaff;border:1px solid #ccebf7;border-radius:17px;
+  padding:17px;line-height:2;margin:15px 0;
+}
+.card-number{font-size:21px;font-weight:900;direction:ltr;text-align:center;letter-spacing:1px;color:#075b9b}
+.rubika{
+  background:#fff9e8;border:1px solid #f0dfad;border-radius:14px;
+  padding:12px;margin-top:13px;
+}
+.rubika b{color:#855f00}
+.notice{
+  margin-top:14px;padding:14px;border-radius:14px;
+  background:#f3f7f9;line-height:1.9;font-size:14px;
+}
+.support{direction:ltr;display:inline-block;font-weight:900;color:#087fc8}
+footer{text-align:center;padding:45px 0 35px;color:#37697e;font-size:13px}
+
+.support-btn{display:flex;justify-content:center;margin-top:10px;padding:11px;border-radius:12px;background:#eaf7ff;color:#087fc8;font-weight:800;border:1px solid #c9e9f7}
+.admin-modal{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(4,42,65,.42);backdrop-filter:blur(7px)}
+.admin-modal .modal{width:min(1000px,100%)}
+.admin-table-wrap{overflow:auto;border:1px solid #e1edf1;border-radius:15px}
+.admin-table{width:100%;border-collapse:collapse;min-width:760px;background:#fff}
+.admin-table th,.admin-table td{padding:11px 9px;text-align:right;border-bottom:1px solid #edf2f4;font-size:13px}
+.admin-table th{background:#eefaff;color:#145776}
+.admin-empty{text-align:center;padding:28px;color:#67808c}
+@media(max-width:900px){
+  .shop-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:650px){
+  header{flex-wrap:wrap;justify-content:center}
+  .logo{width:100%;text-align:center}
+  nav{order:3;width:100%;justify-content:center}
+  nav a{padding:8px 10px;font-size:12px}
+  .hero{padding-top:145px;min-height:520px}
+  .shop-grid,.modes{grid-template-columns:1fr}
+  .rank-card{padding:20px 16px}
+  .mode{min-height:210px}
+  .sun{top:62px;width:100px;height:100px;font-size:60px}
+}
+</style>
+</head>
+<body>
+
+<div class="beach"><div class="sun">☀️</div></div>
+
+<header>
+  <div class="logo">Summer Land</div>
+  <nav>
+    <a href="#shop">شاپ</a>
+    <a href="#about">درباره</a>
+    <a href="#modes">Game Modes</a>
+  </nav>
+  <div class="actions">
+    <button class="header-btn cart-btn" onclick="openCart()">🛒 سبد خرید <span class="badge" id="cartCount">0</span></button>
+    <button class="header-btn" onclick="openAdminLogin()">مدیر</button>
+    <button class="header-btn register" onclick="openRegister()">ثبت نام</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrapper">
+      <h1>Summer Land</h1>
+      <p>یک دنیای دوستانه برای بازی، آشنایی و ساختن خاطره‌های خوب</p>
+      <a class="primary" href="#shop">مشاهده شاپ</a>
+    </div>
+  </section>
+
+  <section class="section" id="shop">
+    <div class="wrapper">
+      <div class="section-title">
+        <h2>شاپ</h2>
+        <p>رنک مورد نظرت رو انتخاب کن</p>
+      </div>
+      <div class="shop-grid" id="shopGrid"><div class="rank-card"><div class="rank-icon">⭐</div><h3>VIP</h3><div class="price">۳۵ تومان</div><button class="buy" onclick="addToCart(0)">خرید</button></div><div class="rank-card"><div class="rank-icon">💎</div><h3>EPIC</h3><div class="price">۵۵ تومان</div><button class="buy" onclick="addToCart(1)">خرید</button></div><div class="rank-card"><div class="rank-icon">🧑</div><h3>HUMAN</h3><div class="price">۷۰ تومان</div><button class="buy" onclick="addToCart(2)">خرید</button></div><div class="rank-card"><div class="rank-icon">👑</div><h3>GOD</h3><div class="price">۹۹ تومان</div><button class="buy" onclick="addToCart(3)">خرید</button></div><div class="rank-card"><div class="rank-icon">☀️</div><h3>SUN</h3><div class="price">۱۲۰ تومان</div><button class="buy" onclick="addToCart(4)">خرید</button></div><div class="rank-card"><div class="rank-icon">🌴</div><h3>SUMMER</h3><div class="price">۲۰۰ تومان</div><button class="buy" onclick="addToCart(5)">خرید</button></div><div class="rank-card"><div class="rank-icon">🔥</div><h3>SPONSOR</h3><div class="price">۳۵۰ تومان</div><button class="buy" onclick="addToCart(6)">خرید</button></div><div class="rank-card"><div class="rank-icon">🏆</div><h3>DONATOR</h3><div class="price">۵۰۰ تومان</div><button class="buy" onclick="addToCart(7)">خرید</button></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="wrapper">
+      <div class="section-title"><h2>درباره Summer Land</h2></div>
+      <div class="about-box">
+        توی این مکان یک مکان دوستانه برای شما فراهم کرده ایم<br>
+        توی summer land فقط بازی نمیکنی!<br>
+        دوست پیدا میکنی و باهاشون وقت میگزرونی
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="modes">
+    <div class="wrapper">
+      <div class="section-title"><h2>game mode ها</h2></div>
+      <div class="modes">
+        <div class="mode">
+          <div class="mode-icon">🌲</div>
+          <h3>survival</h3>
+        </div>
+        <div class="mode">
+          <div class="mode-icon">☁️</div>
+          <h3>sky mine</h3>
+          <p>به زودی ...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>Summer Land • Minecraft Server</footer>
+
+<div class="register-modal" id="registerModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('registerModal')">×</button>
+    <h2>ثبت نام</h2>
+    <div class="field"><label>نام</label><input id="regName" type="text" placeholder="نام شما"></div>
+    <div class="field"><label>ایمیل</label><input id="regEmail" type="email" placeholder="example@email.com"></div>
+    <div class="field"><label>رمز عبور</label><input id="regPass" type="password" placeholder="حداقل ۸ کاراکتر"></div>
+    <div class="field"><label>تکرار رمز عبور</label><input id="regConfirm" type="password" placeholder="رمز را دوباره وارد کنید"></div>
+    <div class="error" id="regError"></div>
+    <div class="success" id="regSuccess"></div>
+    <button class="primary" style="width:100%" onclick="registerUser()">ثبت نام</button>
+  </div>
+</div>
+
+<div class="cart-modal" id="cartModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('cartModal')">×</button>
+    <h2>سبد خرید</h2>
+    <div id="cartItems"></div>
+    <div class="total"><span>مبلغ کل</span><span id="cartTotal">۰ تومان</span></div>
+    <button class="primary" style="width:100%" onclick="continueCheckout()">ادامه و پرداخت</button>
+  </div>
+</div>
+
+<div class="pay-modal" id="payModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('payModal')">×</button>
+    <h2>پرداخت</h2>
+    <p id="payGreeting" style="color:#4a6d7d"></p>
+    <div class="pay-box">
+      <div>شماره کارت:</div>
+      <div class="card-number">۵۸۵۹ ۸۳۱۸ ۰۳۰۲ ۲۹۳۷</div>
+      <div style="text-align:center;margin-top:8px"><b>سید علی علوی</b></div>
+    </div>
+    <div class="rubika">
+      <b>یوزر گیم</b>
+      <input id="gameId" type="text" placeholder="یوزر گیم خود را وارد کنید" autocomplete="off"
+        style="width:100%;margin-top:10px;padding:12px;border:1px solid #d7e4ea;border-radius:10px;box-sizing:border-box;font-family:inherit">
+    </div>
+    <div class="rubika">
+      <b>آیدی روبیکا یا تلگرام</b>
+      <input id="contactId" type="text" placeholder="آیدی روبیکا یا تلگرام خود را وارد کنید" autocomplete="off"
+        style="width:100%;margin-top:10px;padding:12px;border:1px solid #d7e4ea;border-radius:10px;box-sizing:border-box;font-family:inherit">
+    </div>
+    <div class="notice">
+      <span class="support">بعد از واریز، روی «خرید کردم» بزنید.</span>
+    </div>
+    <button class="primary" style="width:100%;margin-top:14px" onclick="saveRubika()">خرید کردم</button>
+    <a class="support-btn" href="https://rubika.ir/Summer_Land_Support" target="_blank" rel="noopener">رفتن به پشتیبانی روبیکا ↗</a>
+    <div class="success" id="paySuccess"></div>
+  </div>
+</div>
+
+<div class="admin-modal" id="adminLoginModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('adminLoginModal')">×</button>
+    <h2>ورود مدیر</h2>
+    <div class="field"><label>رمز پنل مدیر</label><input id="adminPassword" type="password" placeholder="رمز مدیر"></div>
+    <div class="error" id="adminError"></div>
+    <button class="primary" style="width:100%" onclick="loginAdmin()">ورود به پنل</button>
+  </div>
+</div>
+
+<div class="admin-modal" id="adminPanelModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('adminPanelModal')">×</button>
+    <h2>پنل مدیر</h2>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>نام</th><th>ایمیل</th><th>یوزر گیم</th><th>آیدی روبیکا/تلگرام</th><th>رنک خریداری‌شده</th><th>تعداد</th><th>مبلغ</th><th>وضعیت</th></tr></thead>
+        <tbody id="adminOrdersBody"></tbody>
+      </table>
+    </div>
+    <button class="primary" style="width:100%;margin-top:15px" onclick="refreshAdminOrders()">بروزرسانی سفارش‌ها</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+"use strict";
+const SUPABASE_URL="https://vyffnyfcuuijtoapwadn.supabase.co";
+const SUPABASE_KEY="sb_publishable_caesf4benFvubAMIMJqrEw_PhvzgLX0";
+const ADMIN_PASSWORD="saFHfDfyGODSFDHOUofDfgOIDSFoydgbsf1324Ra3q42";
+const ranks=[
+ ["VIP",35,"۳۵ تومان","⭐"],["EPIC",55,"۵۵ تومان","💎"],
+ ["HUMAN",70,"۷۰ تومان","🧑"],["GOD",99,"۹۹ تومان","👑"],
+ ["SUN",120,"۱۲۰ تومان","☀️"],["SUMMER",200,"۲۰۰ تومان","🌴"],
+ ["SPONSOR",350,"۳۵۰ تومان","🔥"],["DONATOR",500,"۵۰۰ تومان","🏆"]
+];
+let db=null,cart=[],user=null;
+try{cart=JSON.parse(localStorage.getItem("summerLandCart")||"[]")}catch(e){}
+try{user=JSON.parse(localStorage.getItem("summerLandUser")||"null")}catch(e){}
+if(!Array.isArray(cart))cart=[];
+const $=id=>document.getElementById(id);
+const show=id=>{const e=$(id);if(e)e.style.display="flex"};
+const hide=id=>{const e=$(id);if(e)e.style.display="none"};
+window.closeModal=hide;
+
+function renderShop(){
+ const box=$("shopGrid");if(!box)return;
+ box.innerHTML=ranks.map((r,i)=>`<div class="rank-card"><div class="rank-icon">${r[3]}</div><h3>${r[0]}</h3><div class="price">${r[2]}</div><button class="buy" type="button" data-rank="${i}">خرید</button></div>`).join("");
+ box.querySelectorAll("[data-rank]").forEach(b=>b.onclick=()=>window.addToCart(+b.dataset.rank));
+}
+function saveCart(){localStorage.setItem("summerLandCart",JSON.stringify(cart));updateCartCount()}
+function updateCartCount(){const e=$("cartCount");if(e)e.textContent=cart.reduce((n,x)=>n+(+x.qty||0),0)}
+window.addToCart=i=>{
+ const f=cart.find(x=>x.index===i);
+ if(f)f.qty=(+f.qty||0)+1;else cart.push({index:i,qty:1});
+ saveCart();renderCart();show("cartModal");
+};
+function renderCart(){
+ const box=$("cartItems"),total=$("cartTotal");if(!box)return;
+ if(!cart.length){box.innerHTML='<div class="cart-empty">سبد خرید شما خالی است.</div>';if(total)total.textContent="۰ تومان";return}
+ let sum=0;
+ box.innerHTML=cart.map((x,p)=>{
+  const r=ranks[x.index],q=+x.qty||1;sum+=r[1]*q;
+  return `<div class="cart-item"><div class="cart-info"><strong>${r[3]} ${r[0]}</strong><small>${r[2]}</small></div><div class="qty"><button data-plus="${p}">+</button><b>${q}</b><button data-minus="${p}">−</button><button class="remove" data-remove="${p}">×</button></div></div>`;
+ }).join("");
+ if(total)total.textContent=new Intl.NumberFormat("fa-IR").format(sum)+" تومان";
+ box.querySelectorAll("[data-plus]").forEach(b=>b.onclick=()=>changeQty(+b.dataset.plus,1));
+ box.querySelectorAll("[data-minus]").forEach(b=>b.onclick=()=>changeQty(+b.dataset.minus,-1));
+ box.querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>{cart.splice(+b.dataset.remove,1);saveCart();renderCart()});
+}
+function changeQty(p,d){if(!cart[p])return;cart[p].qty=(+cart[p].qty||1)+d;if(cart[p].qty<=0)cart.splice(p,1);saveCart();renderCart()}
+window.openCart=()=>{renderCart();show("cartModal")};
+
+function regError(t){const e=$("regError");if(e){e.textContent=t;e.style.display="block"}}
+window.openRegister=()=>{const e=$("regError"),s=$("regSuccess");if(e)e.style.display="none";if(s)s.style.display="none";show("registerModal")};
+window.registerUser=()=>{
+ const n=$("regName")?.value.trim(),em=$("regEmail")?.value.trim(),pw=$("regPass")?.value||"",cf=$("regConfirm")?.value||"";
+ if(!n)return regError("نام را وارد کنید");
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em))return regError("ایمیل وارد شده معتبر نیست");
+ if(pw.length<8)return regError("رمز عبور باید حداقل ۸ کاراکتر باشد");
+ if(pw!==cf)return regError("تکرار رمز عبور با رمز اصلی یکسان نیست");
+ user={name:n,email:em};localStorage.setItem("summerLandUser",JSON.stringify(user));
+ const s=$("regSuccess");if(s){s.textContent="ثبت نام با موفقیت انجام شد.";s.style.display="block"}
+ setTimeout(()=>hide("registerModal"),500);
+};
+
+window.continueCheckout=()=>{
+ if(!cart.length)return;
+ if(!user){hide("cartModal");show("registerModal");return regError("برای ادامه خرید ابتدا ثبت نام کنید.")}
+ hide("cartModal");if($("payGreeting"))$("payGreeting").textContent="سلام "+user.name+"، اطلاعات پرداخت سفارش شما:";show("payModal");
+};
+
+window.saveRubika=async()=>{
+ const gameId=($("gameId")?.value||"").trim();
+ const contactId=($("contactId")?.value||"").trim();
+ const msg=$("paySuccess");
+ if(!gameId){if(msg){msg.textContent="لطفاً یوزر گیم را وارد کنید.";msg.style.display="block"}return}
+ if(!contactId){if(msg){msg.textContent="لطفاً آیدی روبیکا یا تلگرام را وارد کنید.";msg.style.display="block"}return}
+ if(!user){hide("payModal");window.openRegister();return regError("ابتدا ثبت نام کنید.")}
+ if(!db){if(msg){msg.textContent="Supabase متصل نیست.";msg.style.display="block"}return}
+ try{
+  for(const x of cart){
+   const r=ranks[x.index],q=+x.qty||1;
+   const {error}=await db.from("orders").insert({
+    customer_name:user.name,
+    customer_email:user.email,
+    game_id:gameId,
+    rubika_id:contactId,
+    rank_name:r[0],
+    price:r[1]*q,
+    quantity:q,
+    status:"pending"
+   });
+   if(error)throw error;
+  }
+  cart=[];saveCart();updateCartCount();
+  if(msg){msg.textContent="سفارش با موفقیت ثبت شد.";msg.style.color="#18864b";msg.style.display="block"}
+ }catch(err){
+  console.error(err);
+  if(msg){msg.textContent="ثبت سفارش انجام نشد؛ ستون game_id را در جدول orders بررسی کن.";msg.style.display="block"}
+ }
+};
+
+window.openAdminLogin=()=>{if($("adminPassword"))$("adminPassword").value="";show("adminLoginModal")};
+window.loginAdmin=async()=>{
+ if(($("adminPassword")?.value||"")!==ADMIN_PASSWORD){const e=$("adminError");if(e){e.textContent="رمز پنل مدیر اشتباه است.";e.style.display="block"}return}
+ hide("adminLoginModal");show("adminPanelModal");await window.refreshAdminOrders();
+};
+window.refreshAdminOrders=async()=>{
+ const b=$("adminOrdersBody");if(!b)return;
+ if(!db){b.innerHTML='<tr><td colspan="8">Supabase متصل نیست.</td></tr>';return}
+ try{
+  const {data,error}=await db.from("orders").select("customer_name,customer_email,rank_name,quantity,game_id,rubika_id,price,status,created_at").order("created_at",{ascending:false});
+  if(error)throw error;
+  b.innerHTML=(data||[]).map(o=>`<tr><td>${o.customer_name||""}</td><td>${o.customer_email||""}</td><td>${o.game_id||""}</td><td>${o.rubika_id||""}</td><td>${o.rank_name||""}</td><td>${o.quantity||1}</td><td>${new Intl.NumberFormat("fa-IR").format(+o.price||0)} تومان</td><td>${o.status||""}</td></tr>`).join("")||'<tr><td colspan="8">هنوز سفارشی ثبت نشده است.</td></tr>';
+ }catch(e){console.error(e);b.innerHTML='<tr><td colspan="8">خطا در دریافت سفارش‌ها.</td></tr>'}
+};
+
+document.addEventListener("DOMContentLoaded",()=>{
+ try{if(window.supabase?.createClient)db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)}catch(e){console.error(e)}
+ renderShop();updateCartCount();
+ document.querySelectorAll('[onclick="openRegister()"]').forEach(b=>{b.removeAttribute("onclick");b.onclick=window.openRegister});
+ document.querySelectorAll('[onclick="openAdminLogin()"]').forEach(b=>{b.removeAttribute("onclick");b.onclick=window.openAdminLogin});
+ document.querySelectorAll('[onclick="registerUser()"]').forEach(b=>{b.removeAttribute("onclick");b.onclick=window.registerUser});
+ document.querySelectorAll('[onclick="loginAdmin()"]').forEach(b=>{b.removeAttribute("onclick");b.onclick=window.loginAdmin});
+});
+})();
+</script>
+</body>
+</html>
